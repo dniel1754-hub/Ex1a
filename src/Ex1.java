@@ -81,7 +81,42 @@ public class Ex1 {
         int lx = xx.length;
         int ly = yy.length;
         if (xx != null && yy != null && lx == ly && lx > 1 && lx < 4) {
+            if (lx == 2) {
+                if (xx[0] == xx[1] )
+                    return ans;
+                ans = new double[2];
+                double shipoa = (yy[0] - yy[1]) / (xx[0] - xx[1]);
+                double c = yy[1] - shipoa * xx[1];
+                ans[0] = c;
+                ans[1] = shipoa;
+                return ans;
 
+
+            }
+            if (lx == 3) {
+                ans = new double[3];
+                double denominator1 = (xx[0] - xx[1]) * (xx[0] - xx[2]);
+                double denominator2 = (xx[1] - xx[0]) * (xx[1] - xx[2]);
+                double denominator3 = (xx[2]-xx[0])*(xx[2]-xx[1]);
+                if (denominator3 ==0 || denominator2 ==0 || denominator1 ==0)
+                    return null;
+                ans[0] += yy[0]/denominator1;
+                ans[1] += yy[0]*(-1*(xx[1]+xx[2]))/denominator1;
+                ans[2] += yy[0]*(xx[1]*xx[2])/denominator1;
+
+                ans[0] += yy[1]/denominator2;
+                ans[1] += yy[1]*(-1*(xx[0]+xx[2]))/denominator2;
+                ans[2] += yy[1]*(xx[0]*xx[2])/denominator2;
+
+                ans[0] += yy[2]/denominator3;
+                ans[1] += yy[2]*(-1*(xx[0]+xx[1]))/denominator3;
+                ans[2] += yy[2]*(xx[0]*xx[1])/denominator3;
+
+
+            }
+        }
+        else {
+            ans = null;
         }
         return ans;
     }
@@ -185,9 +220,23 @@ public class Ex1 {
      */
     public static double sameValue(double[] p1, double[] p2, double x1, double x2, double eps) {
         double ans = x1;
-        /** add you code below
+        if (p1 == null)
+            return root_rec(p2,x1,x2,eps);
+        if (p2 == null)
+            return root_rec(p1,x1,x2,eps);
+        double [] p3 = new double[Math.max(p1.length,p2.length)];
+       for (int i =0;i< p3.length;i++){
+           if (i< p1.length && i< p2.length)
+               p3[i] = p1[i] - p2[i];
+           if (i>= p1.length && i<p2.length)
+               p3[i] = -1*p2[i];
+           if (i>=p2.length && i< p1.length)
+               p3[i] = p1[i];
 
-         /////////////////// */
+
+       }
+
+       ans = root_rec(p3,x1,x2,eps);
         return ans;
     }
 

@@ -175,8 +175,85 @@ class Ex1Test {
 			assertFalse(Ex1.equals(d1[i], xx[i]));
 		}
 	}
+    // simple test for the function PolynomFromPoints with 2 points
+    @Test
+    public void testTwoPoints_simpleLine() {
+        double[] xx = {1, 3};
+        double[] yy = {2, 6};
 
-	@Test
+        // y = 2x ? לא → נבדוק:
+        // שיפוע = (2 - 6)/(1 - 3) = (-4)/(-2) = 2
+        // c = y - mx = 2 - 2*1 = 0 → y = 2x
+
+        double[] p = Ex1.PolynomFromPoints(xx, yy);
+
+        assertEquals(0, p[0], 1e-9);
+        assertEquals(2, p[1], 1e-9);
+    }
+    // test for the function PolynomFromPoints with 2 points also with the same y value
+    @Test
+    public void testTwoPoints_HorizontalLine() {
+        double[] xx = {0, 5};
+        double[] yy = {3, 3};
+
+        // y = 3 → c = 3, slope = 0
+
+        double[] p = Ex1.PolynomFromPoints(xx, yy);
+
+        assertEquals(3, p[0], 1e-9);
+        assertEquals(0, p[1], 1e-9);
+    }
+    // test for the function PolynomFromPoints with 2 points also with the same x value
+    @Test
+    public void testTwoPoints_InvalidVerticalLine() {
+        double[] xx = {2, 2};
+        double[] yy = {1, 5};
+
+        double[] p = Ex1.PolynomFromPoints(xx, yy);
+
+        assertNull(p); // חייב null
+    }
+
+
+    //  simple test for the function PolynomFromPoints with 3 points
+    @Test
+    public void testThreePoints_LinearInsideQuadratic() {
+        double[] xx = {1, 2, 3};
+        double[] yy = {2, 4, 6}; // y = 2x
+
+        double[] p = Ex1.PolynomFromPoints(xx, yy);
+
+        // מצופה לקבל a=0, b=2, c=0
+        assertEquals(0, p[2], 1e-9);
+        assertEquals(2, p[1], 1e-9);
+        assertEquals(0, p[0], 1e-9);
+    }
+    // test for root_rec function
+    @Test
+    public void testLinearSimpleRoot() {
+        // p(x) = x - 3  (שורש ב-x=3)
+        double[] p = { -3, 1 };
+        double x = Ex1.root_rec(p, 0, 5, 1e-6);
+
+        assertTrue(Math.abs(Ex1.f(p, x)) < 1e-6,
+                "Expected |f(x)| < eps but got " + Math.abs(Ex1.f(p, x)));
+        assertTrue(x >= 0 && x <= 5);
+    }
+    // test for root_rec function
+    @Test
+    public void testSmallEpsilonMorePrecision() {
+        // p(x) = x - 0.12345
+        double[] p = { -0.12345, 1 };
+
+        double x = Ex1.root_rec(p, 0, 1, 1e-10); // epsilon קטן מאוד
+
+        assertTrue(Math.abs(Ex1.f(p, x)) < 1e-10);
+    }
+
+
+
+
+    @Test
 	/**
 	 * Tests is the sameValue function is symmetric.
 	 */
@@ -186,6 +263,34 @@ class Ex1Test {
 		double rs2 = Ex1.sameValue(po2,po1, x1, x2, Ex1.EPS);
 		assertEquals(rs1,rs2, Ex1.EPS);
 	}
+    // test for samevalue function if p1 = null
+    @Test
+    public void testNullP1() {
+        // p1 = null
+        // p2(x) = x - 2
+        double[] p1 = null;
+        double[] p2 = {-2, 1};
+
+        double x = Ex1.sameValue(p1, p2, 0, 5, Ex1.EPS);
+
+        // אמור להיות x ≈ 2
+        assertEquals(2, x, Ex1.EPS);
+    }
+    // test for same value function if for the 2 polinom have the same values
+    @Test
+    public void testSamePolynomials() {
+        // p1(x) = x^2 + 1
+        double[] p1 = {1, 0, 1};
+        double[] p2 = {1, 0, 1};
+
+        // כל x הוא פתרון, הפונקציה תחזיר את מה ש-root_rec מחזירה עבור פולינום זה
+        double x = Ex1.sameValue(p1, p2, -10, 10, Ex1.EPS);
+
+        // פה אפשר רק לבדוק שהערך חוקי
+        assertTrue(x >= -10 && x <= 10);
+    }
+
+
 	@Test
 	/**
 	 * Test the area function - it should be symmetric.
