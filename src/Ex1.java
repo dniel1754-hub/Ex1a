@@ -156,7 +156,7 @@ public class Ex1 {
               count++;
        }
        double [] a = new double[p.length-count];
-       for (int i =0,j =0;i<a.length;i++)
+       for (int i =0,j =0;i<p.length;i++)
        {
            if (p[i] != 0.0)
                a[j++]= p[i];
@@ -259,10 +259,22 @@ public class Ex1 {
      * * and sum all of this to length (return length)
      */
     public static double length(double[] p, double x1, double x2, int numberOfSegments) {
-        double ans = x1;
-        /** add you code below
+        double ans = 0.0;
+        double h = (x2-x1)/numberOfSegments;
+        double currx = x1;
+        double curry = f(p,currx);
+        for (int i = 0;i<numberOfSegments;i++){
+            double nextx = x1+ (i+1)*h;
+            double nexty = f(p,nextx);
+            double disx = nextx -currx;
+            double disy = nexty - curry;
+            double curuntlen = Math.sqrt(disx*disx+disy*disy);
+            ans += curuntlen;
+            currx = nextx;
+            curry = nexty;
 
-         /////////////////// */
+        }
+
         return ans;
     }
 
@@ -286,6 +298,7 @@ public class Ex1 {
      */
     public static double area(double[] p1, double[] p2, double x1, double x2, int numberOfTrapezoid) {
         double ans = 0;
+
         /** add you code below
 
          /////////////////// */

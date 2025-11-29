@@ -160,6 +160,48 @@ class Ex1Test {
 		if(!isSame2) {fail();}
 		assertEquals(sp, Ex1.poly(p1));
 	}
+    // 3 test for gethezkafromstring function 1 checks for ordinary output
+    @Test
+    public void testHezkaSimple() {
+        assertEquals(3, Ex1.gethezkafromstring("5x^3"));
+    }
+    // 2 checks for a case without hezka
+
+    @Test
+    public void testHezkaNoPower() {
+        // אם אין ^ החזקה מוגדרת כ־1
+        assertEquals(1, Ex1.gethezkafromstring("7x"));
+    }
+    // 3 cheks for a case without x
+
+    @Test
+    public void testHezkaSingleX() {
+        assertEquals(1, Ex1.gethezkafromstring("x"));
+    }
+    // 4 test for getdoublefromstring function 1 checks for a negative number
+    @Test
+    public void testDoubleNegative() {
+        assertEquals(-2.5, Ex1.getdoublefromstring("-2.5x^2"), 0.0001);
+    }
+    // 2 checks for a case without a number
+    @Test
+    public void testDoubleNoCoefficient() {
+        // "x^2" → מקדם 1
+        assertEquals(1.0, Ex1.getdoublefromstring("x^2"), 0.0001);
+    }
+    // 3 checks for a case with +
+
+    @Test
+    public void testDoubleWithPlus() {
+        // "+3x" → מקדם 3
+        assertEquals(3.0, Ex1.getdoublefromstring("+3x"), 0.0001);
+    }
+    // 4 checks for a case with number smaller than 1
+
+    @Test
+    public void testDoubleFraction() {
+        assertEquals(0.75, Ex1.getdoublefromstring("0.75x"), 0.0001);
+    }
 	@Test
 	/**
 	 * Tests the equality of pairs of arrays.
@@ -175,6 +217,27 @@ class Ex1Test {
 			assertFalse(Ex1.equals(d1[i], xx[i]));
 		}
 	}
+    // test for remove function gets double array with 0 and return new array without it
+    @Test
+    public void testRemoveSimple() {
+        double[] arr = {1, 0, 2, 0, 3};
+        double[] expected = {1, 2, 3};
+
+        double[] actual = Ex1.remove(arr);
+
+        assertArrayEquals(expected, actual, 0.0001);
+    }
+    // test for remove function without 0 the function does nothing
+
+    @Test
+    public void testRemoveNoZeros() {
+        double[] arr = {1, 2, 3};
+        double[] expected = {1, 2, 3};
+
+        double[] actual = Ex1.remove(arr);
+
+        assertArrayEquals(expected, actual, 0.0001);
+    }
     // simple test for the function PolynomFromPoints with 2 points
     @Test
     public void testTwoPoints_simpleLine() {
@@ -288,6 +351,52 @@ class Ex1Test {
 
         // פה אפשר רק לבדוק שהערך חוקי
         assertTrue(x >= -10 && x <= 10);
+    }
+    // test for length function for a strait line
+    @Test
+    public void testStraightLine() {
+        // y = 2x + 1  --> אורך קטע בקו ישר צריך להיות בדיוק x2-x1 * sqrt(1 + m^2)
+        double[] p = {1, 2}; // f(x)=1 + 2x
+
+        double x1 = 0;
+        double x2 = 3;
+        double expected = (x2 - x1) * Math.sqrt(1 + 4); // sqrt(5)*3
+
+        double actual = Ex1.length(p, x1, x2, 100);
+
+        assertEquals(expected, actual, 0.001);
+    }
+    // test for length function for a parabola
+    @Test
+    public void testParabolaSimple() {
+        // f(x) = x^2
+        double[] p = {0, 0, 1};
+
+        double x1 = 0;
+        double x2 = 1;
+
+        // ערך ידוע: אורך גרף x^2 בין 0 ל-1 ≈ 1.47894
+        double expected = 1.47894;
+
+        double actual = Ex1.length(p, x1, x2, 500);
+
+        assertEquals(expected, actual, 0.01);
+    }
+    // test for length function that Calculate distance is correct
+    @Test
+    public void testSingleSegment() {
+        // n = 1 → אורך = המרחק בין שתי נקודות (x1,f(x1)) ו-(x2,f(x2))
+        double[] p = {0, 1}; // f(x)=x
+        double x11 = 0;
+        double x2 = 4;
+
+        double dx = x2 - x11; // 4
+        double dy = Ex1.f(p, x2) - Ex1.f(p, x11); // 4-0 =4
+        double expected = Math.sqrt(dx*dx + dy*dy); // sqrt(32)
+
+        double actual = Ex1.length(p, x11, x2, 1);
+
+        assertEquals(expected, actual, 0.001);
     }
 
 
