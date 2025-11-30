@@ -1,0 +1,17 @@
+Index: src/Ex1.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Ex1.java b/src/Ex1.java
+--- a/src/Ex1.java
++++ b/src/Ex1.java	(date 1763984699225)
+@@ -74,7 +74,7 @@
+      * @param yy
+      * @return an array of doubles representing the coefficients of the polynom.
+      * this function gets 2 array double of x and y value and return array double of mekadmin for the polinom
+-     * hint - with la
++     * hint - with Lagrange Polynomial
+      */
+     public static double[] PolynomFromPoints(double[] xx, double[] yy) {
+         double[] ans = null;

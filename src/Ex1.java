@@ -26,6 +26,7 @@ public class Ex1 {
      * @param poly - polynomial function
      * @param x
      * @return f(x) - the polynomial function value at x.
+     *
      * this function gets a double number and array polinom and return its sum value inside the polinom
      */
     public static double f(double[] poly, double x) {
@@ -48,6 +49,7 @@ public class Ex1 {
      * @param x2  - maximal value of the range
      * @param eps - epsilon (positive small value (often 10^-3, or 10^-6).
      * @return an x value (x1<=x<=x2) for which |p(x)| < eps.
+     *
      * this function gets polinom ( array of double) 2 double or range and epsilone
      * and return x double between x1 to x2 that his polinom value in erech mochlat is smaller than epsilon
      */
@@ -73,6 +75,7 @@ public class Ex1 {
      * @param xx
      * @param yy
      * @return an array of doubles representing the coefficients of the polynom.
+     *
      * this function gets 2 array double of x and y value and return array double of mekadmin for the polinom
      * hint - with Lagrange Polynomial
      */
@@ -128,6 +131,7 @@ public class Ex1 {
      * @param p1 first polynomial function
      * @param p2 second polynomial function
      * @return true iff p1 represents the same polynomial function as p2.
+     *
      * this function gets 2 array double of polinom ( mekadmim ) and check if both of them are equals
      */
     public static boolean equals(double[] p1, double[] p2) {
@@ -173,6 +177,7 @@ public class Ex1 {
      *
      * @param poly the polynomial function represented as an array of doubles
      * @return String representing the polynomial function:
+     *
      * this function gets array double of polinom (mekadmin) and return string that represent him
      */
     public static String poly(double[] poly) {
@@ -215,6 +220,7 @@ public class Ex1 {
      * @param x2  - maximal value of the range
      * @param eps - epsilon (positive small value (often 10^-3, or 10^-6).
      * @return an x value (x1<=x<=x2) for which |p1(x) - p2(x)| < eps.
+     *
      * the function checks for hisor 2 polinom in erech mochlat if it smaller then epsilon
      * a hint - we need to do hisor between to polinom and activate on the resulte the function root_rec
      */
@@ -252,6 +258,7 @@ public class Ex1 {
      * @param x2               - maximal value of the range
      * @param numberOfSegments - (A positive integer value (1,2,...).
      * @return the length approximation of the function between f(x1) and f(x2).
+     *
      * this function gets 2 double array of polinom and a range between x1 to x2 and int numberOfSegments that divide her
      * * hint - we divide the range (x2-x1) in numberOfSegments -1 = distance between points , and start from the beginning and every time adding,distance between points
      * * and checking the value for current x in f() for p1 and for p2
@@ -289,6 +296,7 @@ public class Ex1 {
      * @param x2                - maximal value of the range
      * @param numberOfTrapezoid - a natural number representing the number of Trapezoids between x1 and x2.
      * @return the approximated area between the two polynomial functions within the [x1,x2] range.
+     *
      * the function get 2 polinom a range and int numberOfTrapezoid and return shetach
      * hint - between the area of x1-x2 we divide it to numberOfTrapezoid -1
      * for every ketah his area = erechfun * rochav ketah (for example if x1-x2 = 10 and numberOfTrapezoid -1 = 4 , so the rochav is 2.5
@@ -298,10 +306,22 @@ public class Ex1 {
      */
     public static double area(double[] p1, double[] p2, double x1, double x2, int numberOfTrapezoid) {
         double ans = 0;
+        double width = (x2-x1)/numberOfTrapezoid;
+        double firstx = x1;
+        double f1first = f(p1,firstx);
+        double f2first = f(p2,firstx);
+        double deltafirst = Math.abs(f1first-f2first);
+        for (int i = 0;i<numberOfTrapezoid;i++){
+            double currentx = x1 +(i+1)*width;
+            double f1now = f(p1,currentx);
+            double f2now = f(p2,currentx);
+            double deltanow = Math.abs(f1now-f2now);
+            double traparea = (width/2.0)*(deltanow+deltafirst);
+            ans += traparea;
+            firstx = currentx;
+            deltafirst = deltanow;
+        }
 
-        /** add you code below
-
-         /////////////////// */
         return ans;
     }
 
@@ -309,12 +329,11 @@ public class Ex1 {
      * This function computes the array representation of a polynomial function from a String
      * representation. Note:given a polynomial function represented as a double array,
      * getPolynomFromString(poly(p)) should return an array equals to p.
+     *
      * the function gets polinom in type string for example " 3x^2 +6x + 5 "
      * and return polinom in type array double
      * we assume that if there is "x" inside p afterword must be ^ (hezka) also if x^1
      *
-     * @param p - a String representing polynomial function.
-     * @return
      */
     public static double[] getPolynomFromString(String p) {
         double[] ans = ZERO;//  -1.0x^2 +3.0x +2.0
@@ -450,6 +469,7 @@ public class Ex1 {
      * function gets double array of polinom and return its nigzeret
 	 * @param po
 	 * @return
+     *
      * we assume that for every cell in the array there is a number ( it can also be 0 )
      * and its chezka is always its place in the array for example -
      * a[2,3,4] = reprezent the polinom = 2*x^0 , 3*x^1 ,4*x^2
